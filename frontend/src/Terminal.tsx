@@ -2,9 +2,15 @@ import { AttachAddon } from "@xterm/addon-attach";
 import { useEffect } from "react";
 import { useXTerm } from "react-xtermjs";
 import { FitAddon } from '@xterm/addon-fit';
+import type { ITerminalOptions } from "@xterm/xterm";
+
+const terminalOptions: ITerminalOptions = {
+  fontFamily: '"FiraCode Nerd Font", monospace',
+  fontSize: 14,
+};
 
 export const MyTerminal = () => {
-  const { instance, ref } = useXTerm();
+  const { instance, ref } = useXTerm({ options: terminalOptions });
 
   useEffect(() => {
     let socket: WebSocket | undefined = undefined;
