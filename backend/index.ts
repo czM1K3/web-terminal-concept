@@ -10,8 +10,16 @@ Bun.serve({
   },
   websocket: {
     message(ws, message) {
-      // console.log("received", message);
       const proc = map.get(ws);
+      if (typeof message === "string" && message.startsWith("{") && message.endsWith("}")) {
+        try {
+          const parsed = JSON.parse(message);
+          if (parsed && parsed.cols && typeof parsed.cols === "number" && parsed.rows && typeof parsed.rows === "number") {
+            proc?.terminal?.resize(parsed.cols, parsed.rows);
+            return;
+          }
+        } catch (e) {}
+      }
       proc?.terminal?.write(message);
     },
     open(ws) {
