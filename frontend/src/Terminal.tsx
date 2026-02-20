@@ -2,6 +2,7 @@ import { AttachAddon } from "@xterm/addon-attach";
 import { useEffect } from "react";
 import { useXTerm } from "react-xtermjs";
 import { FitAddon } from '@xterm/addon-fit';
+import { WebglAddon } from "@xterm/addon-webgl";
 import type { ITerminalOptions } from "@xterm/xterm";
 
 const terminalOptions: ITerminalOptions = {
@@ -20,6 +21,11 @@ export const MyTerminal = () => {
       instance.loadAddon(attachAddon);
       const fitAddon = new FitAddon();
       instance.loadAddon(fitAddon);
+      const webglAddon = new WebglAddon();
+      webglAddon.onContextLoss(() => {
+        webglAddon.dispose();
+      });
+      instance.loadAddon(webglAddon);
       instance.onResize(({ cols, rows }) => {
         const data = { cols, rows };
         socket?.send(JSON.stringify(data));
