@@ -1,6 +1,11 @@
+import frontend from "../frontend/dist/index.html";
+
 const map = new Map<Bun.ServerWebSocket<undefined>, Bun.Subprocess<"ignore", "pipe", "inherit">>();
 
 Bun.serve({
+  routes: {
+    "/": frontend,
+  },
   fetch(req, server) {
     // upgrade the request to a WebSocket
     if (server.upgrade(req)) {
